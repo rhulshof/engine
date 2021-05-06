@@ -61,6 +61,7 @@ class Trade:
         :rtype: None
         """
         self.current = ohlcv['close']
+        self.capital_low = self.currency_amount * ohlcv['low']
         self.set_profits()
         self.update_max_drawdown()
 
@@ -99,13 +100,12 @@ class Trade:
     def update_max_drawdown(self) -> None:
         """
         Updates max drawdown.
-
         :return: None
         :rtype: None
         """
-        if self.capital < self.lowest_seen_price:
-            self.lowest_seen_price = self.capital
-            self.max_seen_drawdown = self.profit_ratio
+        if self.capital_low < self.lowest_seen_price:
+            self.lowest_seen_price = self.capital_low
+            self.max_seen_drawdown = self.capital_low / self.starting_amount
 
     def check_for_sl(self, ohlcv: dict) -> bool:
         """

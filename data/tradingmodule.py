@@ -220,9 +220,9 @@ class TradingModule:
         :rtype: None
         """
         try:
-            self.open_order_value_per_timestamp[ohlcv['time']] += trade.capital
+            self.open_order_value_per_timestamp[ohlcv['time']] += trade.capital_low
         except KeyError:
-            self.open_order_value_per_timestamp[ohlcv['time']] = trade.capital
+            self.open_order_value_per_timestamp[ohlcv['time']] = trade.capital_low
 
     def update_budget_per_timestamp_tracking(self, ohlcv: dict) -> None:
         """

@@ -242,6 +242,7 @@ class DataModule:
         :return: None
         :rtype: None
         """
+        # Reads backtesting file
         filename = self.generate_datafile_name(pair)
         filepath = os.path.join("data/backtesting-data/", self.config["exchange"], filename)
         try:
