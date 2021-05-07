@@ -83,6 +83,7 @@ class TradingModule:
         """
         stoploss_reached = self.check_stoploss_open_trade(trade, ohlcv)
         roi_reached = self.check_roi_open_trade(trade, ohlcv)
+        roi_reached = False
 
         if stoploss_reached or roi_reached:
             return  # trade is closed by stoploss or ROI

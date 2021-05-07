@@ -2,22 +2,20 @@
   "exchange": "binance",
   "timeframe": "30m",
   "max-open-trades": 1,
-  "starting-capital": 1000,
+  "starting-capital": 100,
   "backtesting-from": "2021-04-01",
   "backtesting-to": "2021-05-01",
   "backtesting-till-now": false,
   "stoploss-type": "standard",
-  "stoploss": -10,
+  "stoploss": -1000,
   "roi": {
-    "0": 5,
-    "60": 4,
-    "120": 3
+    "0": 5000000
   },
   "pairs": [
     "BTC/USDT"
   ],
   "currency": "USDT",
-  "fee": 0.25,
+  "fee": 0.0,
   "strategy-name": "MyStrategy",
   "strategies-folder": "strategies",
   "plots": false,

@@ -3,9 +3,13 @@ from pathlib import Path
 from os import path
 import rapidjson
 import numpy as np
+import sys
+sys.path.append('.')
+from backtesting.backtesting import BackTesting as backtest
+from models.trade import Trade
 
 SPEND_AMOUNT = 100
-FEE = 0.0025
+FEE = 0.00
 
 def test_config():
     assert (path.exists("config.json"))
@@ -20,6 +24,7 @@ def test_profit():
 
     ticks = data_dict.keys()
     trading = False
+    total_profit = SPEND_AMOUNT
     for tick in ticks:
         if not trading:
             if data_dict[tick]['buy'] == 1:
@@ -34,6 +39,20 @@ def test_profit():
 
                 assert (profit_ratio_simple == profit_ratio_engine)
                 assert (profit_dollar_simple == profit_dollar_engine)
+
+                total_profit += profit_dollar_simple
+
+    print("PROFIT: " + str(total_profit))
+
+
+
+
+
+    # market_change = get_market_change(ticks, data_dict)
+    # trade = Trade()
+    # print(trade)
+    # coin_res = backtest.generate_coin_results(closed_trades, market_change)
+    # print(coin_res)
 
 def trade_profit(data_dict, begin_time, end_time):
     ticks = data_dict.keys()
@@ -79,7 +98,33 @@ def get_trade_profit(data_dict, begin_time, end_time):
     profit_ratio = end_capital_with_fee / begin_amount
     profit_dollar = end_capital_with_fee - begin_amount
 
-    return profit_ratio, profit_dollar,
+    return profit_ratio, profit_dollar
+
+def get_market_change(ticks: list, data_dict: dict) -> dict:
+    """
+    Calculates the market change for every coin if bought at start and sold at end.
+
+    :param ticks: list with all ticks
+    :type ticks: list
+    :param pairs: list of traded pairs
+    :type pairs: list
+    :param data_dict: dict containing OHLCV data per pair
+    :type data_dict: dict
+    :return: dict with market change per pair
+    :rtype: dict
+    """
+    pairs = ['BTC/USDT']
+    market_change = {}
+    total_change = 0
+    ticks = list(ticks)
+    for pair in pairs:
+        begin_value = data_dict[ticks[0]]['close']
+        end_value = data_dict[ticks[-1]]['close']
+        coin_change = end_value / begin_value
+        market_change[pair] = coin_change
+        total_change += coin_change
+    market_change['all'] = total_change / len(pairs)
+    return market_change
 
 if __name__ == '__main__':
     test_profit()
